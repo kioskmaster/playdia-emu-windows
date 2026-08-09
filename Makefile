@@ -1,10 +1,20 @@
 CC       = gcc
+
 SDL_CFLAGS  := $(shell sdl2-config --cflags)
 SDL_LIBS    := $(shell sdl2-config --libs)
+
 FFMPEG_CFLAGS := $(shell pkg-config --cflags libavcodec libavutil libswscale)
 FFMPEG_LIBS   := $(shell pkg-config --libs   libavcodec libavutil libswscale)
-CFLAGS   = -Wall -Wextra -std=c11 -g -O2 -Isrc $(SDL_CFLAGS) $(FFMPEG_CFLAGS)
-LDFLAGS  = $(SDL_LIBS) $(FFMPEG_LIBS) -lzip -lm
+
+# STATIC BUILD FLAGS
+CFLAGS   = -Wall -Wextra -std=c11 -g -O2 -Isrc \
+           $(SDL_CFLAGS) $(FFMPEG_CFLAGS) \
+           -static
+
+LDFLAGS  = $(SDL_LIBS) $(FFMPEG_LIBS) \
+           -lzip -lm \
+           -static -static-libgcc -static-libstdc++
+
 TARGET   = playdia.exe
 
 SRCS = src/main.c \
@@ -24,20 +34,20 @@ OBJS = $(SRCS:.c=.o)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+    $(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 HDRS = $(wildcard src/*.h)
 
 %.o: %.c $(HDRS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) -c -o $@ $<
 
 test: test_full
-	./test_full
+    ./test_full
 
 test_full: test_full.c src/cpu_tlcs870.c src/cpu_nec78k.c
-	$(CC) -Wall -std=c11 -g -Isrc -o test_full test_full.c src/cpu_tlcs870.c src/cpu_nec78k.c
+    $(CC) -Wall -std=c11 -g -Isrc -o test_full test_full.c src/cpu_tlcs870.c src/cpu_nec78k.c
 
 clean:
-	rm -f $(OBJS) $(TARGET) test_full
+    rm -f $(OBJS) $(TARGET) test_full
 
 .PHONY: all test clean
