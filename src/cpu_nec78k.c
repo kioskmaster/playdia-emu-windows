@@ -33,6 +33,9 @@
 #include "cpu_nec78k.h"
 #include <string.h>
 #include <stdio.h>
+// Forward declarations
+int cpu_extract_psw_bit(CPU_NEC78K *c, int bit_idx);
+void cpu_inject_psw_bit(CPU_NEC78K *c, int bit_idx, int val);
 
 /* ── memory helpers ─────────────────────────────────────── */
 static inline uint8_t  m8 (CPU_NEC78K *c, uint16_t a) { return c->mem[a]; }
