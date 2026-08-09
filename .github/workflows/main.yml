@@ -22,6 +22,8 @@ jobs:
           mingw-w64-x86_64-SDL2
           mingw-w64-x86_64-ffmpeg
           mingw-w64-x86_64-libzip
+          mingw-w64-x86_64-zlib
+          mingw-w64-x86_64-libpng
           make
 
     - name: Build Playdia
