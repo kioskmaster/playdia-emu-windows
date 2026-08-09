@@ -27,7 +27,8 @@ jobs:
     - name: Build Playdia
       shell: msys2 {0}
       run: |
-        make
+        mingw32-make
+        ls -l playdia.exe
 
     - name: Copy Required DLLs
       shell: msys2 {0}
