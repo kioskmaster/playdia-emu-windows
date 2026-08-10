@@ -1,0 +1,43 @@
+name: Windows MSVC Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install MSVC Build Tools 2022
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg C:\vcpkg
+        C:\vcpkg\bootstrap-vcpkg.bat
+
+    - name: Enable vcpkg binary caching
+      run: |
+        echo "set(VCPKG_BINARY_SOURCES \"clear;default\")" >> C:/vcpkg/triplets/x64-windows-static.cmake
+
+    - name: Install dependencies (SDL2, FFmpeg, libzip)
+      run: |
+        C:\vcpkg\vcpkg.exe install sdl2:x64-windows-static
+        C:\vcpkg\vcpkg.exe install ffmpeg:x64-windows-static
+        C:\vcpkg\vcpkg.exe install libzip:x64-windows-static
+
+    - name: Configure CMake
+      run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
+
+    - name: Build Playdia
+      run: cmake --build build --config Release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: playdia-windows-msvc
+        path: build/Release/playdia.exe
