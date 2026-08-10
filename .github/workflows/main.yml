@@ -27,10 +27,7 @@ jobs:
         C:\vcpkg\vcpkg.exe install libzip:x64-windows-static
 
     - name: Configure CMake
-      run: |
-        cmake -B build -S . ^
-          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
-          -DVCPKG_TARGET_TRIPLET=x64-windows-static
+      run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
 
     - name: Build Playdia
       run: cmake --build build --config Release
