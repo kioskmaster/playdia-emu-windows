@@ -24,13 +24,18 @@ add_executable(playdia
     src/sdl_frontend.c
 )
 
-target_include_directories(playdia PRIVATE src)
+target_include_directories(playdia PRIVATE
+    src
+    ${FFMPEG_INCLUDE_DIRS}
+)
+
+target_link_directories(playdia PRIVATE
+    ${FFMPEG_LIBRARY_DIRS}
+)
 
 target_link_libraries(playdia PRIVATE
     SDL2::SDL2
     SDL2::SDL2main
-    FFMPEG::avcodec
-    FFMPEG::avutil
-    FFMPEG::swscale
+    ${FFMPEG_LIBRARIES}
     libzip::zip
 )
