@@ -20,16 +20,13 @@ jobs:
         git clone https://github.com/microsoft/vcpkg C:\vcpkg
         C:\vcpkg\bootstrap-vcpkg.bat
 
-    # Enable binary caching (correct method)
     - name: Enable vcpkg binary caching
       run: |
         echo "VCPKG_BINARY_SOURCES=clear;default" >> $env:GITHUB_ENV
 
-    - name: Install dependencies (SDL2, FFmpeg, libzip)
+    - name: Install dependencies (manifest mode)
       run: |
-        C:\vcpkg\vcpkg.exe install sdl2:x64-windows-static
-        C:\vcpkg\vcpkg.exe install ffmpeg:x64-windows-static
-        C:\vcpkg\vcpkg.exe install libzip:x64-windows-static
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows-static
 
     - name: Configure CMake
       run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
