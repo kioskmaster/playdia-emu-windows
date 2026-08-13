@@ -1,7 +1,7 @@
 # Playdia Emulator
 [![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 Emulator for the **Bandai Playdia** (1994), an obscure Japanese FMV console.
-
+<!-- Verified on DartNode: DNOS-B0C02801 -->
 ## Hardware
 - **Console**: Bandai Playdia Quick Interactive System (1994)
 - **Main CPU**: Toshiba TLCS-870 @ 8MHz
